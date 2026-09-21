@@ -226,6 +226,11 @@ namespace DLQReprocessing
                         newMsg.ApplicationProperties[property.Key] = property.Value;
                     }
 
+                    if (newMsg.ApplicationProperties.TryGetValue("force-deadletter", out _))
+                    {
+                        newMsg.ApplicationProperties["force-deadletter"] = false;
+                    }
+
                     if (msgRetryCount < maxRetryCount && deadLetterReason.Contains(msgDeadLetterReason))
                     {
                         subscription = reprocessor as TopicSubscription;
